@@ -16,8 +16,4 @@ A user-friendly web app to convert `.heic` images to `.jpg` or `.png` directly i
 4. Click **Convert**
 5. Download your converted image
 
-## Live Demo
-[Add link here if you deploy it using GitHub Pages or Netlify]
 
-## License
-[MIT or your preferred license]
