@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HEIC 2 4K Converter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/heic2any/dist/heic2any.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+      background-color: #1e1e2f;
+      color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #00d4ff;
+      margin-bottom: 10px;
+    }
+
+    .uploader {
+      background: #2a2a3d;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    input[type="file"], select {
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #00d4ff;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #00b4d4;
+    }
+
+    #download-link {
+      margin-top: 20px;
+      display: none;
+      color: #00ff90;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>HEIC 2 4K Converter</h1>
+  <div class="uploader">
+    <p>Select a HEIC image to convert it to JPG or PNG.</p>
+    <input type="file" id="heicInput" accept=".heic" />
+    <br>
+    <label for="formatSelect">Convert to:</label>
+    <select id="formatSelect">
+      <option value="image/jpeg">JPG</option>
+      <option value="image/png">PNG</option>
+    </select>
+    <br>
+    <button onclick="convertImage()">Convert</button>
+    <a id="download-link" download>Download Converted Image</a>
+  </div>
+
+  <footer>
+    &copy; 2025 HEIC 2 4K Converter | All processing happens in your browser 🔒
+  </footer>
+
+  <script>
+    async function convertImage() {
+      const input = document.getElementById('heicInput');
+      const format = document.getElementById('formatSelect').value;
+      const link = document.getElementById('download-link');
+
+      if (!input.files.length) {
+        alert('Please select a HEIC file.');
+        return;
+      }
+
+      const file = input.files[0];
+
+      try {
+        const blob = await heic2any({
+          blob: file,
+          toType: format,
+          quality: 0.9
+        });
+
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.download = file.name.replace(/\.[^/.]+$/, "") + (format === "image/png" ? ".png" : ".jpg");
+        link.textContent = "Download " + link.download;
+        link.style.display = 'inline-block';
+      } catch (error) {
+        console.error(error);
+        alert('Conversion failed. Make sure the file is a valid HEIC image.');
+      }
+    }
+  </script>
+</body>
+</html>
